@@ -34,7 +34,8 @@ Only selected providers need credentials. `TYPESAFE_AI_API_KEY` is also accepted
 when `TYPESAFE_API_KEY` is absent. The CLI reads `.env` from the project root;
 existing process environment variables take precedence. Keys remain in the local
 process and are sent only to their provider's native API. They are excluded from
-logs and result reports. `.env` and `results/` are ignored by Git.
+logs and result reports. `.env` and `results/` are ignored by Git. Selected live
+experiment reports are reviewed and committed separately under `reports/`.
 
 ## Translate
 
@@ -155,6 +156,81 @@ Native provider confidence is distinct from the selected option's probability.
 Both are preserved without treating them as interchangeable across providers.
 The SDK validates responses and accounts for provider-declared rounding; returned
 probabilities are not normalized or fabricated by this experiment.
+
+## Recorded live experiments
+
+On October 8, 2026 (Asia/Seoul), we ran 13 translations and one additional response
+diagnostic with `openai:gpt-6-luna` through the native OpenAI Decisions endpoint.
+The [report index](reports/2026-10-08/openai-decisions/index.json) lists every trial
+and links its individual JSON report. These reports retain the original settings,
+outputs, successful decision traces, probabilities, confidence, and token usage.
+The index records the implementation revision and dependency versions.
+
+### Korean-to-English sentences
+
+The four sentence trials used the existing prompt and English alphabet without
+changes. Each allowed 120 output characters and 121 decision attempts, with a
+30-second timeout per decision and zero retries. EOS remained available from the
+first decision.
+
+| Korean source | Actual output | Status | Duration | Decisions |
+| --- | --- | --- | --- | --- |
+| 나는 사과를 좋아한다. | `Attttsstttetteeee` | `completed` | 4.33 s | 18 |
+| 오늘 날씨가 좋다. | `Attttttttt` | `completed` | 2.72 s | 11 |
+| 나는 매일 아침 커피를 마신다. | `etttttttnnnnnnnnnntnnennnnenn` | `completed` | 8.04 s | 30 |
+| 내일 오후 세 시에 역 앞에서 만나자. | Empty; immediate EOS | `error` | 0.24 s | 1 |
+
+For example, reproduce the first trial with a fresh local report path:
+
+```sh
+npm run translate -- --model openai:gpt-6-luna --from ko --to en --max-chars 120 --max-decisions 121 --timeout-ms 30000 --retries 0 --json results/ko-en-sentence-rerun.json "나는 사과를 좋아한다."
+```
+
+The individual reports are [sentence 1](reports/2026-10-08/openai-decisions/openai-live-20261008-ko-en-sentence-1.json),
+[sentence 2](reports/2026-10-08/openai-decisions/openai-live-20261008-ko-en-sentence-2.json),
+[sentence 3](reports/2026-10-08/openai-decisions/openai-live-20261008-ko-en-sentence-3.json),
+and [sentence 4](reports/2026-10-08/openai-decisions/openai-live-20261008-ko-en-sentence-4.json).
+
+### Earlier short-input trials
+
+These nine translations also used the unchanged prompt and zero retries. Their
+character limits were 20 to 40; exact limits and decision bounds are recorded in
+each report. Two English-source directions were each repeated twice. The table
+shows the mean duration where there were two runs, including failed runs.
+
+| Source | Target | Runs | Actual output | Status | Duration |
+| --- | --- | --- | --- | --- | --- |
+| 안녕. | English | 1 | Empty; immediate EOS | `error` | 2.35 s |
+| Hello. | Japanese | 2 | `ああ` in both runs | `completed` | Mean 0.92 s |
+| Hello. | Korean | 2 | `아`, then an error in both runs | `error` | Mean 1.24 s |
+| 고마워. | English | 1 | `et` | `completed` | 0.80 s |
+| 고마워. | Japanese | 1 | `あ` | `completed` | 0.48 s |
+| おはよう。 | English | 1 | `Heeeeeeeeeh` | `completed` | 2.78 s |
+| おはよう。 | Korean | 1 | `어넌어너나` | `completed` | 3.60 s |
+
+One additional [English-to-Korean diagnostic](reports/2026-10-08/openai-decisions/openai-live-20261008-ko-response-diagnostic.json)
+reproduced the partial `아` output. The fifth decision returned HTTP 200 with an
+answer of type `refusal`. The run ended after 1.31 seconds and five attempts. The
+diagnostic records limited response metadata for that failed attempt; the normal
+CLI reports retain the generic invalid-or-refused error.
+
+### Interpretation
+
+Manual inspection found no adequate translation in these trials. No automated
+translation-quality score was computed. `completed` means that the model selected
+EOS after nonempty output; it does not establish accuracy or fluency.
+
+Early EOS explains some failures, but the repeated-letter sentence outputs also
+show incorrect choices before termination. Removing early EOS alone would not
+establish that this method can translate correctly. These observations apply to
+the current prompt and sequential character or Hangul-component decisions; they
+do not establish the model's general chat translation ability.
+
+Elapsed times include HTTP latency and local processing. Because the outputs were
+incorrect or stopped early, these times do not measure successful translation
+speed. The sample covers one provider and one model, so it cannot rank providers
+or model versions. The next investigation should check request construction,
+instruction wording, and choice descriptions using controlled comparisons.
 
 ## Development
 
