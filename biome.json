@@ -4,5 +4,5 @@
   "files": { "includes": ["**", "!!package-lock.json"] },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
   "javascript": { "formatter": { "quoteStyle": "double" } },
-  "linter": { "enabled": true, "rules": { "preset": "none" } }
+  "linter": { "enabled": true, "rules": { "preset": "recommended" } }
 }
