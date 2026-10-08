@@ -1,5 +1,7 @@
 # System One Translator
 
+Licensed under the [MIT License](LICENSE).
+
 An experiment that builds translations by repeatedly asking a native decision
 model to select the next output unit from a fixed set of choices.
 
