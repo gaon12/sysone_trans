@@ -85,13 +85,16 @@ export function createDecisionClient(
   return {
     id,
     async decide(input, signal) {
+      const minimumOptions = provider === "openai" ? 2 : 1;
       if (
-        input.options.length < 1 ||
+        input.options.length < minimumOptions ||
         input.options.length > 255 ||
         new Set(input.options.map((option) => option.label)).size !==
           input.options.length
       ) {
-        throw new Error("A decision needs 1–255 options with unique labels.");
+        throw new Error(
+          `A ${provider} decision needs ${minimumOptions}–255 options with unique labels.`,
+        );
       }
       const timeout = AbortSignal.timeout(timeoutMs);
       const abortSignal = signal ? AbortSignal.any([signal, timeout]) : timeout;

@@ -258,3 +258,22 @@ test("the decision deadline cancels a stalled HTTP request", async () => {
   });
   await assert.rejects(client.decide(input), /timed out/);
 });
+
+test("OpenAI enforces its two-choice minimum before an HTTP request", async () => {
+  let requests = 0;
+  const client = createDecisionClient("openai:gpt-6-luna", {
+    apiKeys: { openai: "test-key" },
+    fetch: async () => {
+      requests++;
+      return Response.json({});
+    },
+  });
+  await assert.rejects(
+    client.decide({
+      ...input,
+      options: [{ label: "EOS", description: "Translation is complete" }],
+    }),
+    /2–255/,
+  );
+  assert.equal(requests, 0);
+});
