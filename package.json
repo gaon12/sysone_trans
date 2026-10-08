@@ -1,0 +1,30 @@
+{
+  "name": "system-one-translator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Compare native decision models by generating translations from fixed choices.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "translate": "tsx src/cli.ts",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "check": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "4.0.88",
+    "@ai-sdk/typesafe-ai": "3.0.15",
+    "ai": "7.0.132"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@types/node": "24.19.1",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  }
+}
