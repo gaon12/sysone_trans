@@ -9,6 +9,7 @@
   },
   "scripts": {
     "translate": "tsx src/cli.ts",
+    "compare": "tsx src/cli.ts --compare",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "format:check": "biome format .",
