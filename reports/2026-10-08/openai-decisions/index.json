@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 1,
+  "experimentDate": "2026-10-08",
+  "timezone": "Asia/Seoul",
+  "implementationRevision": "b4d770472d5b58fc272496f4c872d69f7d13093a",
+  "model": "openai:gpt-6-luna",
+  "endpoint": "https://api.openai.com/v1/decisions",
+  "runtime": {
+    "node": "v24.16.0",
+    "dependencies": {
+      "@ai-sdk/openai": "4.0.88",
+      "@ai-sdk/typesafe-ai": "3.0.15",
+      "ai": "7.0.132"
+    }
+  },
+  "conditions": {
+    "unchangedPromptAndAlphabets": true,
+    "eosAvailableFromFirstBoundary": true,
+    "timeoutMs": 30000,
+    "maxRetries": 0,
+    "durationIncludes": [
+      "HTTP latency",
+      "local decision processing and output composition",
+      "CLI callbacks for CLI trials"
+    ]
+  },
+  "counts": {
+    "translationTrials": 13,
+    "diagnosticTrials": 1,
+    "eosCompletedTranslationTrials": 9
+  },
+  "observations": [
+    "Manual inspection found no adequate translation in these trials; no automated quality score was computed.",
+    "Completed means EOS followed nonempty output, not that the translation was accurate.",
+    "The Korean-to-English sentence trials produced repeated letters in three runs and immediate EOS in one run.",
+    "The separate English-to-Korean diagnostic returned HTTP 200 with a refusal on decision 5; the regular CLI trials retained a generic invalid-or-refused error.",
+    "Durations of early termination and incorrect output are not measurements of successful translation speed.",
+    "These results describe the current native decision prompt and output-unit selection method, not general chat translation ability.",
+    "Provider responses and per-decision distributions are preserved in the linked reports. The diagnostic also records limited response metadata for its failed attempt.",
+    "Aggregate exports with duplicated traces were omitted; this index links every individual source report."
+  ],
+  "trials": [
+    {
+      "file": "openai-live-20261008-ko-en-greeting.json",
+      "kind": "short_input",
+      "repetition": 1,
+      "source": "안녕.",
+      "sourceLanguage": "ko",
+      "targetLanguage": "en",
+      "text": "",
+      "status": "error",
+      "outputCharacters": 0,
+      "decisionCount": 1,
+      "durationMs": 2348.7156999999997,
+      "maxChars": 40,
+      "maxDecisions": 41,
+      "usage": {
+        "inputTokens": 1579,
+        "outputTokens": 0,
+        "totalTokens": 1579
+      },
+      "error": "The model ended before producing a translation."
+    },
+    {
+      "file": "openai-live-20261008-en-greeting.json",
+      "kind": "short_input",
+      "repetition": 1,
+      "source": "Hello.",
+      "sourceLanguage": "en",
+      "targetLanguage": "ja",
+      "text": "ああ",
+      "status": "completed",
+      "outputCharacters": 2,
+      "decisionCount": 3,
+      "durationMs": 1151.5463,
+      "maxChars": 20,
+      "maxDecisions": 61,
+      "usage": {
+        "inputTokens": 13637,
+        "outputTokens": 0,
+        "totalTokens": 13637
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-en-greeting.json",
+      "kind": "short_input",
+      "repetition": 1,
+      "source": "Hello.",
+      "sourceLanguage": "en",
+      "targetLanguage": "ko",
+      "text": "아",
+      "status": "error",
+      "outputCharacters": 1,
+      "decisionCount": 5,
+      "durationMs": 1305.7309999999998,
+      "maxChars": 20,
+      "maxDecisions": 61,
+      "usage": {
+        "inputTokens": 5514,
+        "outputTokens": 0,
+        "totalTokens": 5514
+      },
+      "error": "The provider returned an invalid or refused decision."
+    },
+    {
+      "file": "openai-live-20261008-en-greeting.json",
+      "kind": "short_input",
+      "repetition": 2,
+      "source": "Hello.",
+      "sourceLanguage": "en",
+      "targetLanguage": "ja",
+      "text": "ああ",
+      "status": "completed",
+      "outputCharacters": 2,
+      "decisionCount": 3,
+      "durationMs": 679.7354,
+      "maxChars": 20,
+      "maxDecisions": 61,
+      "usage": {
+        "inputTokens": 13637,
+        "outputTokens": 0,
+        "totalTokens": 13637
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-en-greeting.json",
+      "kind": "short_input",
+      "repetition": 2,
+      "source": "Hello.",
+      "sourceLanguage": "en",
+      "targetLanguage": "ko",
+      "text": "아",
+      "status": "error",
+      "outputCharacters": 1,
+      "decisionCount": 5,
+      "durationMs": 1180.1725999999999,
+      "maxChars": 20,
+      "maxDecisions": 61,
+      "usage": {
+        "inputTokens": 5514,
+        "outputTokens": 0,
+        "totalTokens": 5514
+      },
+      "error": "The provider returned an invalid or refused decision."
+    },
+    {
+      "file": "openai-live-20261008-ko-thanks.json",
+      "kind": "short_input",
+      "repetition": 1,
+      "source": "고마워.",
+      "sourceLanguage": "ko",
+      "targetLanguage": "en",
+      "text": "et",
+      "status": "completed",
+      "outputCharacters": 2,
+      "decisionCount": 3,
+      "durationMs": 800.5754999999999,
+      "maxChars": 30,
+      "maxDecisions": 31,
+      "usage": {
+        "inputTokens": 4744,
+        "outputTokens": 0,
+        "totalTokens": 4744
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-ko-thanks.json",
+      "kind": "short_input",
+      "repetition": 1,
+      "source": "고마워.",
+      "sourceLanguage": "ko",
+      "targetLanguage": "ja",
+      "text": "あ",
+      "status": "completed",
+      "outputCharacters": 1,
+      "decisionCount": 2,
+      "durationMs": 481.2014999999999,
+      "maxChars": 30,
+      "maxDecisions": 31,
+      "usage": {
+        "inputTokens": 9094,
+        "outputTokens": 0,
+        "totalTokens": 9094
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-ja-morning.json",
+      "kind": "short_input",
+      "repetition": 1,
+      "source": "おはよう。",
+      "sourceLanguage": "ja",
+      "targetLanguage": "en",
+      "text": "Heeeeeeeeeh",
+      "status": "completed",
+      "outputCharacters": 11,
+      "decisionCount": 12,
+      "durationMs": 2777.6758999999997,
+      "maxChars": 20,
+      "maxDecisions": 61,
+      "usage": {
+        "inputTokens": 19009,
+        "outputTokens": 0,
+        "totalTokens": 19009
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-ja-morning.json",
+      "kind": "short_input",
+      "repetition": 1,
+      "source": "おはよう。",
+      "sourceLanguage": "ja",
+      "targetLanguage": "ko",
+      "text": "어넌어너나",
+      "status": "completed",
+      "outputCharacters": 5,
+      "decisionCount": 16,
+      "durationMs": 3603.7006,
+      "maxChars": 20,
+      "maxDecisions": 61,
+      "usage": {
+        "inputTokens": 19744,
+        "outputTokens": 0,
+        "totalTokens": 19744
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-ko-en-sentence-1.json",
+      "kind": "sentence",
+      "repetition": 1,
+      "source": "나는 사과를 좋아한다.",
+      "sourceLanguage": "ko",
+      "targetLanguage": "en",
+      "text": "Attttsstttetteeee",
+      "status": "completed",
+      "outputCharacters": 17,
+      "decisionCount": 18,
+      "durationMs": 4325.502799999999,
+      "maxChars": 120,
+      "maxDecisions": 121,
+      "usage": {
+        "inputTokens": 28570,
+        "outputTokens": 0,
+        "totalTokens": 28570
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-ko-en-sentence-2.json",
+      "kind": "sentence",
+      "repetition": 1,
+      "source": "오늘 날씨가 좋다.",
+      "sourceLanguage": "ko",
+      "targetLanguage": "en",
+      "text": "Attttttttt",
+      "status": "completed",
+      "outputCharacters": 10,
+      "decisionCount": 11,
+      "durationMs": 2724.9965,
+      "maxChars": 120,
+      "maxDecisions": 121,
+      "usage": {
+        "inputTokens": 17449,
+        "outputTokens": 0,
+        "totalTokens": 17449
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-ko-en-sentence-3.json",
+      "kind": "sentence",
+      "repetition": 1,
+      "source": "나는 매일 아침 커피를 마신다.",
+      "sourceLanguage": "ko",
+      "targetLanguage": "en",
+      "text": "etttttttnnnnnnnnnntnnennnnenn",
+      "status": "completed",
+      "outputCharacters": 29,
+      "decisionCount": 30,
+      "durationMs": 8039.9376,
+      "maxChars": 120,
+      "maxDecisions": 121,
+      "usage": {
+        "inputTokens": 47892,
+        "outputTokens": 0,
+        "totalTokens": 47892
+      },
+      "error": null
+    },
+    {
+      "file": "openai-live-20261008-ko-en-sentence-4.json",
+      "kind": "sentence",
+      "repetition": 1,
+      "source": "내일 오후 세 시에 역 앞에서 만나자.",
+      "sourceLanguage": "ko",
+      "targetLanguage": "en",
+      "text": "",
+      "status": "error",
+      "outputCharacters": 0,
+      "decisionCount": 1,
+      "durationMs": 238.7451000000001,
+      "maxChars": 120,
+      "maxDecisions": 121,
+      "usage": {
+        "inputTokens": 1588,
+        "outputTokens": 0,
+        "totalTokens": 1588
+      },
+      "error": "The model ended before producing a translation."
+    },
+    {
+      "file": "openai-live-20261008-ko-response-diagnostic.json",
+      "kind": "diagnostic",
+      "repetition": 1,
+      "source": "Hello.",
+      "sourceLanguage": "en",
+      "targetLanguage": "ko",
+      "text": "아",
+      "status": "error",
+      "outputCharacters": 1,
+      "decisionCount": 5,
+      "durationMs": 1311.6752999999999,
+      "maxChars": 20,
+      "maxDecisions": 61,
+      "usage": {
+        "inputTokens": 5514,
+        "outputTokens": 0,
+        "totalTokens": 5514
+      },
+      "error": "The provider returned an invalid or refused decision."
+    }
+  ]
+}
